@@ -8,12 +8,13 @@ import java.util.NoSuchElementException;
  * 유지하는 데이터베이스이다. 
  */
 public class MovieDB {
+    MyLinkedList<MovieDBItem> mylinkedlist;
     public MovieDB() {
         // FIXME implement this
     	
     	// HINT: MovieDBGenre 클래스를 정렬된 상태로 유지하기 위한 
     	// MyLinkedList 타입의 멤버 변수를 초기화 한다.
-        
+        mylinkedlist = new MyLinkedList<MovieDBItem>();
     }
 
     public void insert(MovieDBItem item) {
