@@ -13,6 +13,7 @@ public class MovieDB {
     	
     	// HINT: MovieDBGenre 클래스를 정렬된 상태로 유지하기 위한 
     	// MyLinkedList 타입의 멤버 변수를 초기화 한다.
+        
     }
 
     public void insert(MovieDBItem item) {
@@ -82,7 +83,7 @@ class Genre extends Node<String> implements Comparable<Genre> {
 	
 	@Override
 	public int compareTo(Genre o) {
-		throw new UnsupportedOperationException("not implemented yet");
+		return this.item.compareTo(o.item);
 	}
 
 	@Override
