@@ -2,19 +2,16 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Genre, Title �쓣 愿�由ы븯�뒗 �쁺�솕 �뜲�씠�꽣踰좎씠�뒪.
+ * Genre, Title 占쎌뱽 �꽴占썹뵳�뗫릭占쎈뮉 占쎌겫占쎌넅 占쎈쑓占쎌뵠占쎄숲甕곗쥙�뵠占쎈뮞.
  * 
- * MyLinkedList 瑜� �궗�슜�빐 媛곴컖 Genre�� Title�뿉 �뵲�씪 �궡遺��쟻�쑝濡� �젙�젹�맂 �긽�깭瑜�  
- * �쑀吏��븯�뒗 �뜲�씠�꽣踰좎씠�뒪�씠�떎. 
+ * MyLinkedList �몴占� 占쎄텢占쎌뒠占쎈퉸 揶쏄낫而� Genre占쏙옙 Title占쎈퓠 占쎈뎡占쎌뵬 占쎄땀�겫占쏙옙�읅占쎌몵嚥∽옙 占쎌젟占쎌졊占쎈쭆 占쎄맒占쎄묶�몴占�  
+ * 占쎌�筌욑옙占쎈릭占쎈뮉 占쎈쑓占쎌뵠占쎄숲甕곗쥙�뵠占쎈뮞占쎌뵠占쎈뼄. 
  */
 public class MovieDB {
-    MyLinkedList<Genre> list;
+    Genre head;
     public MovieDB() {
-        // FIXME implement this
-    	
-    	// HINT: MovieDBGenre �겢�옒�뒪瑜� �젙�젹�맂 �긽�깭濡� �쑀吏��븯湲� �쐞�븳 
-    	// MyLinkedList ���엯�쓽 硫ㅻ쾭 蹂��닔瑜� 珥덇린�솕 �븳�떎.
-        list = new MyLinkedList<Genre>();
+        
+        head = new Genre(null);
     }
 
     public void insert(MovieDBItem item) {
@@ -24,36 +21,46 @@ public class MovieDB {
     	// Printing functionality is provided for the sake of debugging.
         // This code should be removed before submitting your work.
         // System.err.printf("[trace] MovieDB: INSERT [%s] [%s]\n", item.getGenre(), item.getTitle());
-    	MyLinkedListIterator<Genre> it = (MyLinkedListIterator<Genre>) list.iterator();
-        int flag = 0;
-        while(it.hasNext()){
-            it.next();
-            if(it.getCurr().getItem().getItem().compareTo(item.getGenre()) == 0){
-            	flag = 3;
-                it.getCurr().getItem().movielist.add(item.getTitle());
-            }
-            else if(it.getCurr().getItem().getItem().compareTo(item.getGenre()) < 0){
-                if(!it.hasNext())
-                    flag = 1;
-            }
-            else{
-                flag = 2;
-                break;
-            }
-        }
-        if(flag == 1 || flag == 0){
-            list.numItems++;
-            Genre genre = new Genre(item.getGenre());
-            genre.movielist.add(item.getTitle());
-            it.getCurr().getItem().setNext(genre);
-        }
-        else if(flag == 2){
-            list.numItems++;
-            Genre genre = new Genre(item.getGenre());
-            genre.movielist.add(item.getTitle());
-//            it.
-            it.getPrev().getItem().setNext(genre);
-        }
+    	Genre curr = new Genre(null);
+    	curr = head;
+    	int flag = 0;
+    	if(curr.next == null) {
+    		flag = 3;
+    	}
+    	while(curr.next != null) {
+    		if(curr.next.getItem().compareTo(item.getGenre()) == 0) {
+    			flag = 1;
+    			break;
+    		}
+    		else if(curr.next.getItem().compareTo(item.getGenre()) < 0) {
+    			flag = 2;
+    			curr = curr.getNext();
+    			if(curr.next == null) {
+    				flag = 3;
+    				break;
+    			}
+    			continue;
+    		}
+    		else {
+    			flag = 3;
+    			break;
+    		}
+    	}
+    	if(flag == 1) {
+    		curr.next.movielist.add(item.getTitle());
+    	}
+    	else if(flag == 2) {
+    		Genre genre = new Genre(item.getGenre());
+    		genre.movielist.add(item.getTitle());
+    		genre.next = curr.next.next.next;
+    		curr.next.next = genre;
+    	}
+    	else if(flag == 3) {
+    		Genre genre = new Genre(item.getGenre());
+    		genre.movielist.add(item.getTitle());
+    		genre.next = curr.next;
+    		curr.next = genre;
+    	}
     }
 
     public void delete(MovieDBItem item) {
@@ -87,23 +94,36 @@ public class MovieDB {
     
     public MyLinkedList<MovieDBItem> items() {
         MyLinkedList<MovieDBItem> results = new MyLinkedList<MovieDBItem>();
-        
+        Genre tmp = head;
+        while(tmp.next != null) {
+        	tmp = tmp.next;
+        	Node<String> tmp2 = tmp.movielist.head;
+        	while(tmp2.getNext() != null) {
+        		tmp2 = tmp2.getNext();
+        		MovieDBItem item = new MovieDBItem(tmp.getItem(), tmp2.getItem());
+        		results.add(item);
+        	}
+        }
     	return results;
     }
 }
 
 class Genre extends Node<String> implements Comparable<Genre> {
     MovieList movielist;
+    Genre next;
 	public Genre(String name) {
 		super(name);
-        movielist = new MovieList();
+		this.movielist = new MovieList();
 	}
-	
 	@Override
 	public int compareTo(Genre o) {
 		return this.getItem().compareTo(o.getItem());
 	}
-
+	@Override
+	public Genre getNext() {
+    	return this.next;
+    }
+	
 // 	@Override
 // 	public int hashCode() {
 // 		throw new UnsupportedOperationException("not implemented yet");

@@ -9,12 +9,11 @@ public class MyLinkedList<T> implements ListInterface<T> {
 
 	public MyLinkedList() {
 		head = new Node<T>(null);
-		numItems = 0;
 	}
 
     /**
-     * {@code Iterable<T>}瑜� 援ы쁽�븯�뿬 iterator() 硫붿냼�뱶瑜� �젣怨듯븯�뒗 �겢�옒�뒪�쓽 �씤�뒪�꽩�뒪�뒗
-     * �떎�쓬怨� 媛숈� �옄諛� for-each 臾몃쾿�쓽 �삙�깮�쓣 蹂� �닔 �엳�떎.
+     * {@code Iterable<T>}�몴占� �뤃�뗭겱占쎈릭占쎈연 iterator() 筌롫뗄�꺖占쎈굡�몴占� 占쎌젫�⑤벏釉�占쎈뮉 占쎄깻占쎌삋占쎈뮞占쎌벥 占쎌뵥占쎈뮞占쎄쉘占쎈뮞占쎈뮉
+     * 占쎈뼄占쎌벉�⑨옙 揶쏆늿占� 占쎌쁽獄쏉옙 for-each �눧紐껋씩占쎌벥 占쎌굺占쎄문占쎌뱽 癰귨옙 占쎈땾 占쎌뿳占쎈뼄.
      * 
      * <pre>
      *  for (T item: iterable) {
