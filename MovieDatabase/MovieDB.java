@@ -8,13 +8,13 @@ import java.util.NoSuchElementException;
  * 유지하는 데이터베이스이다. 
  */
 public class MovieDB {
-    MyLinkedList<MovieDBItem> mylinkedlist;
+    MyLinkedList<MyLinkedList<string>> list;
     public MovieDB() {
         // FIXME implement this
     	
     	// HINT: MovieDBGenre 클래스를 정렬된 상태로 유지하기 위한 
     	// MyLinkedList 타입의 멤버 변수를 초기화 한다.
-        mylinkedlist = new MyLinkedList<MovieDBItem>();
+        list = new MyLinkedList<MyLinkedList<string>>();
     }
 
     public void insert(MovieDBItem item) {
@@ -23,7 +23,21 @@ public class MovieDB {
 
     	// Printing functionality is provided for the sake of debugging.
         // This code should be removed before submitting your work.
-        System.err.printf("[trace] MovieDB: INSERT [%s] [%s]\n", item.getGenre(), item.getTitle());
+        // System.err.printf("[trace] MovieDB: INSERT [%s] [%s]\n", item.getGenre(), item.getTitle());
+        Iterator it = list.iterator();
+        while(it.hasNext()){
+            String genre = it.getNext().getItem();
+            if(genre.compareTo(item.genre) == 0){
+
+            }
+            else if (genre.compareTo(item.genre < 0)){
+                continue;
+            }
+            else{
+                
+            }
+            it.next();
+        }
     }
 
     public void delete(MovieDBItem item) {
