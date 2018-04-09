@@ -9,6 +9,7 @@ public class MyLinkedList<T> implements ListInterface<T> {
 
 	public MyLinkedList() {
 		head = new Node<T>(null);
+		numItems = 0;
 	}
 
     /**
