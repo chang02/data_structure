@@ -2,18 +2,18 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Genre, Title 을 관리하는 영화 데이터베이스.
+ * Genre, Title �쓣 愿�由ы븯�뒗 �쁺�솕 �뜲�씠�꽣踰좎씠�뒪.
  * 
- * MyLinkedList 를 사용해 각각 Genre와 Title에 따라 내부적으로 정렬된 상태를  
- * 유지하는 데이터베이스이다. 
+ * MyLinkedList 瑜� �궗�슜�빐 媛곴컖 Genre�� Title�뿉 �뵲�씪 �궡遺��쟻�쑝濡� �젙�젹�맂 �긽�깭瑜�  
+ * �쑀吏��븯�뒗 �뜲�씠�꽣踰좎씠�뒪�씠�떎. 
  */
 public class MovieDB {
     MyLinkedList<Genre> list;
     public MovieDB() {
         // FIXME implement this
     	
-    	// HINT: MovieDBGenre 클래스를 정렬된 상태로 유지하기 위한 
-    	// MyLinkedList 타입의 멤버 변수를 초기화 한다.
+    	// HINT: MovieDBGenre �겢�옒�뒪瑜� �젙�젹�맂 �긽�깭濡� �쑀吏��븯湲� �쐞�븳 
+    	// MyLinkedList ���엯�쓽 硫ㅻ쾭 蹂��닔瑜� 珥덇린�솕 �븳�떎.
         list = new MyLinkedList<Genre>();
     }
 
@@ -24,14 +24,15 @@ public class MovieDB {
     	// Printing functionality is provided for the sake of debugging.
         // This code should be removed before submitting your work.
         // System.err.printf("[trace] MovieDB: INSERT [%s] [%s]\n", item.getGenre(), item.getTitle());
-        Iterator it = list.iterator();
+    	MyLinkedListIterator<Genre> it = (MyLinkedListIterator<Genre>) list.iterator();
         int flag = 0;
         while(it.hasNext()){
             it.next();
-            if(it.curr.getItem().compareTo(item.getGenre()) == 0){
-                it.curr.movielist.add(item.getTitle());
+            if(it.getCurr().getItem().getItem().compareTo(item.getGenre()) == 0){
+            	flag = 3;
+                it.getCurr().getItem().movielist.add(item.getTitle());
             }
-            else if(it.curr.getItem().compareTo(item.getGenre()) < 0){
+            else if(it.getCurr().getItem().getItem().compareTo(item.getGenre()) < 0){
                 if(!it.hasNext())
                     flag = 1;
             }
@@ -40,17 +41,18 @@ public class MovieDB {
                 break;
             }
         }
-        if(flag == 1){
+        if(flag == 1 || flag == 0){
             list.numItems++;
             Genre genre = new Genre(item.getGenre());
             genre.movielist.add(item.getTitle());
-            it.curr.setNext(genre);
+            it.getCurr().getItem().setNext(genre);
         }
         else if(flag == 2){
             list.numItems++;
             Genre genre = new Genre(item.getGenre());
             genre.movielist.add(item.getTitle());
-            it.prev.setNext(genre);
+//            it.
+            it.getPrev().getItem().setNext(genre);
         }
     }
 
@@ -84,7 +86,7 @@ public class MovieDB {
     }
     
     public MyLinkedList<MovieDBItem> items() {
-        MyLinkedList<MovieDBItem> results = list;
+        MyLinkedList<MovieDBItem> results = new MyLinkedList<MovieDBItem>();
         
     	return results;
     }
@@ -99,7 +101,7 @@ class Genre extends Node<String> implements Comparable<Genre> {
 	
 	@Override
 	public int compareTo(Genre o) {
-		return this.item.compareTo(o.item);
+		return this.getItem().compareTo(o.getItem());
 	}
 
 // 	@Override
@@ -111,13 +113,13 @@ class Genre extends Node<String> implements Comparable<Genre> {
 // 	public boolean equals(Object obj) {
 // 		throw new UnsupportedOperationException("not implemented yet");
 // 	}
-// }
+}
 
 class MovieList implements ListInterface<String> {	
-    Node<string> head;
+    Node<String> head;
     int numItems;
 	public MovieList() {
-        head = new Node<string>();
+        head = new Node<String>(null);
         numItems = 0;
 	}
 
@@ -138,7 +140,7 @@ class MovieList implements ListInterface<String> {
 
 	@Override
 	public void add(String item) {
-		Node<T> curr = head;
+		Node<String> curr = head;
         while (curr.getNext() != null) {
             if(curr.getNext().getItem().compareTo(item) == 0)
                 return;
@@ -162,15 +164,15 @@ class MovieList implements ListInterface<String> {
 	}
 }
 
-class MovieListIterator<String> implements Iterator<String> {
+class MovieListIterator<string> implements Iterator<String> {
     // FIXME implement this
     // Implement the iterator for MyLinkedList.
     // You have to maintain the current position of the iterator.
-    private MovieList<String> list;
+    private MovieList list;
     private Node<String> curr;
     private Node<String> prev;
 
-    public MovieListIterator(MyLinkedList<String> list) {
+    public MovieListIterator(MovieList list) {
         this.list = list;
         this.curr = list.head;
         this.prev = null;
@@ -182,7 +184,7 @@ class MovieListIterator<String> implements Iterator<String> {
     }
 
     @Override
-    public T next() {
+    public String next() {
         if (!hasNext())
             throw new NoSuchElementException();
 

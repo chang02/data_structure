@@ -28,7 +28,7 @@ public class MovieDBItem implements Comparable<MovieDBItem> {
         if(this.genre.compareTo(other.genre) == 0)
             return this.title.compareTo(other.title);
         else
-            return this.genre.compareTo(other.genre)
+            return this.genre.compareTo(other.genre);
     }
 
     @Override

@@ -13,8 +13,8 @@ public class MyLinkedList<T> implements ListInterface<T> {
 	}
 
     /**
-     * {@code Iterable<T>}를 구현하여 iterator() 메소드를 제공하는 클래스의 인스턴스는
-     * 다음과 같은 자바 for-each 문법의 혜택을 볼 수 있다.
+     * {@code Iterable<T>}瑜� 援ы쁽�븯�뿬 iterator() 硫붿냼�뱶瑜� �젣怨듯븯�뒗 �겢�옒�뒪�쓽 �씤�뒪�꽩�뒪�뒗
+     * �떎�쓬怨� 媛숈� �옄諛� for-each 臾몃쾿�쓽 �삙�깮�쓣 蹂� �닔 �엳�떎.
      * 
      * <pre>
      *  for (T item: iterable) {
@@ -89,6 +89,12 @@ class MyLinkedListIterator<T> implements Iterator<T> {
 		curr = curr.getNext();
 
 		return curr.getItem();
+	}
+	public Node<T> getCurr() {
+		return curr;
+	}
+	public Node<T> getPrev() {
+		return prev;
 	}
 
 	@Override

@@ -1,0 +1,209 @@
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+/**
+ * Genre, Title �쓣 愿�由ы븯�뒗 �쁺�솕 �뜲�씠�꽣踰좎씠�뒪.
+ * 
+ * MyLinkedList 瑜� �궗�슜�빐 媛곴컖 Genre�� Title�뿉 �뵲�씪 �궡遺��쟻�쑝濡� �젙�젹�맂 �긽�깭瑜�  
+ * �쑀吏��븯�뒗 �뜲�씠�꽣踰좎씠�뒪�씠�떎. 
+ */
+public class MovieDB {
+    MyLinkedList<Genre> list;
+    public MovieDB() {
+        // FIXME implement this
+    	
+    	// HINT: MovieDBGenre �겢�옒�뒪瑜� �젙�젹�맂 �긽�깭濡� �쑀吏��븯湲� �쐞�븳 
+    	// MyLinkedList ���엯�쓽 硫ㅻ쾭 蹂��닔瑜� 珥덇린�솕 �븳�떎.
+        list = new MyLinkedList<Genre>();
+    }
+
+    public void insert(MovieDBItem item) {
+        // FIXME implement this
+        // Insert the given item to the MovieDB.
+
+    	// Printing functionality is provided for the sake of debugging.
+        // This code should be removed before submitting your work.
+        // System.err.printf("[trace] MovieDB: INSERT [%s] [%s]\n", item.getGenre(), item.getTitle());
+    	MyLinkedListIterator<Genre> it = (MyLinkedListIterator<Genre>) list.iterator();
+        int flag = 0;
+        Genre tmp = new Genre(null);
+        while(it.hasNext()){
+            tmp = it.next();
+            if(tmp.getItem().compareTo(item.getGenre()) == 0){
+            	flag = 3;
+                tmp.movielist.add(item.getTitle());
+            }
+            else if(tmp.getItem().compareTo(item.getGenre()) < 0){
+                if(!it.hasNext())
+                    flag = 1;
+            }
+            else{
+                flag = 2;
+                break;
+            }
+        }
+        if(flag == 1 || flag == 0){
+            list.numItems++;
+            Genre genre = new Genre(item.getGenre());
+            genre.movielist.add(item.getTitle());
+            tmp.setNext(genre);
+        }
+        else if(flag == 2){
+            list.numItems++;
+            Genre genre = new Genre(item.getGenre());
+            genre.movielist.add(item.getTitle());
+//            it.
+            it.getPrev().setNext(genre);
+        }
+    }
+
+    public void delete(MovieDBItem item) {
+        // FIXME implement this
+        // Remove the given item from the MovieDB.
+    	
+    	// Printing functionality is provided for the sake of debugging.
+        // This code should be removed before submitting your work.
+        System.err.printf("[trace] MovieDB: DELETE [%s] [%s]\n", item.getGenre(), item.getTitle());
+    }
+
+    public MyLinkedList<MovieDBItem> search(String term) {
+        // FIXME implement this
+        // Search the given term from the MovieDB.
+        // You should return a linked list of MovieDBItem.
+        // The search command is handled at SearchCmd class.
+    	
+    	// Printing search results is the responsibility of SearchCmd class. 
+    	// So you must not use System.out in this method to achieve specs of the assignment.
+    	
+        // This tracing functionality is provided for the sake of debugging.
+        // This code should be removed before submitting your work.
+    	System.err.printf("[trace] MovieDB: SEARCH [%s]\n", term);
+    	
+    	// FIXME remove this code and return an appropriate MyLinkedList<MovieDBItem> instance.
+    	// This code is supplied for avoiding compilation error.   
+        MyLinkedList<MovieDBItem> results = new MyLinkedList<MovieDBItem>();
+
+        return results;
+    }
+    
+    public MyLinkedList<MovieDBItem> items() {
+        MyLinkedList<MovieDBItem> results = new MyLinkedList<MovieDBItem>();
+        
+    	return results;
+    }
+}
+
+class Genre extends Node<String> implements Comparable<Genre> {
+    MovieList movielist;
+	public Genre(String name) {
+		super(name);
+        movielist = new MovieList();
+	}
+	
+	@Override
+	public int compareTo(Genre o) {
+		return this.getItem().compareTo(o.getItem());
+	}
+
+// 	@Override
+// 	public int hashCode() {
+// 		throw new UnsupportedOperationException("not implemented yet");
+// 	}
+
+// 	@Override
+// 	public boolean equals(Object obj) {
+// 		throw new UnsupportedOperationException("not implemented yet");
+// 	}
+}
+
+class MovieList implements ListInterface<String> {	
+    Node<String> head;
+    int numItems;
+	public MovieList() {
+        head = new Node<String>(null);
+        numItems = 0;
+	}
+
+	@Override
+	public Iterator<String> iterator() {
+		return new MovieListIterator<String>(this);
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return head.getNext() == null;
+	}
+
+	@Override
+	public int size() {
+		return numItems;
+	}
+
+	@Override
+	public void add(String item) {
+		Node<String> curr = head;
+        while (curr.getNext() != null) {
+            if(curr.getNext().getItem().compareTo(item) == 0)
+                return;
+            else if(curr.getNext().getItem().compareTo(item) < 0)
+                curr = curr.getNext();
+            else
+                break;
+        }
+        curr.insertNext(item);
+        numItems += 1;
+	}
+
+	@Override
+	public String first() {
+		return head.getNext().getItem();
+	}
+
+	@Override
+	public void removeAll() {
+		head.setNext(null);
+	}
+}
+
+class MovieListIterator<string> implements Iterator<String> {
+    // FIXME implement this
+    // Implement the iterator for MyLinkedList.
+    // You have to maintain the current position of the iterator.
+    private MovieList list;
+    private Node<String> curr;
+    private Node<String> prev;
+
+    public MovieListIterator(MovieList list) {
+        this.list = list;
+        this.curr = list.head;
+        this.prev = null;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return curr.getNext() != null;
+    }
+
+    @Override
+    public String next() {
+        if (!hasNext())
+            throw new NoSuchElementException();
+
+        prev = curr;
+        curr = curr.getNext();
+
+        return curr.getItem();
+    }
+
+    @Override
+    public void remove() {
+        if (prev == null)
+            throw new IllegalStateException("next() should be called first");
+        if (curr == null)
+            throw new NoSuchElementException();
+        prev.removeNext();
+        list.numItems -= 1;
+        curr = prev;
+        prev = null;
+    }
+}
