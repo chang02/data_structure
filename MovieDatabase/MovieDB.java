@@ -1,12 +1,7 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- * Genre, Title 占쎌뱽 �꽴占썹뵳�뗫릭占쎈뮉 占쎌겫占쎌넅 占쎈쑓占쎌뵠占쎄숲甕곗쥙�뵠占쎈뮞.
- * 
- * MyLinkedList �몴占� 占쎄텢占쎌뒠占쎈퉸 揶쏄낫而� Genre占쏙옙 Title占쎈퓠 占쎈뎡占쎌뵬 占쎄땀�겫占쏙옙�읅占쎌몵嚥∽옙 占쎌젟占쎌졊占쎈쭆 占쎄맒占쎄묶�몴占�  
- * 占쎌�筌욑옙占쎈릭占쎈뮉 占쎈쑓占쎌뵠占쎄숲甕곗쥙�뵠占쎈뮞占쎌뵠占쎈뼄. 
- */
+
 public class MovieDB {
     Genre head;
     public MovieDB() {
@@ -15,12 +10,6 @@ public class MovieDB {
     }
 
     public void insert(MovieDBItem item) {
-        // FIXME implement this
-        // Insert the given item to the MovieDB.
-
-    	// Printing functionality is provided for the sake of debugging.
-        // This code should be removed before submitting your work.
-        // System.err.printf("[trace] MovieDB: INSERT [%s] [%s]\n", item.getGenre(), item.getTitle());
     	Genre curr = new Genre(null);
     	curr = head;
     	int flag = 0;
