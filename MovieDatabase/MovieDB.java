@@ -75,22 +75,21 @@ public class MovieDB {
     }
 
     public MyLinkedList<MovieDBItem> search(String term) {
-        // FIXME implement this
-        // Search the given term from the MovieDB.
-        // You should return a linked list of MovieDBItem.
-        // The search command is handled at SearchCmd class.
     	
-    	// Printing search results is the responsibility of SearchCmd class. 
-    	// So you must not use System.out in this method to achieve specs of the assignment.
-    	
-        // This tracing functionality is provided for the sake of debugging.
-        // This code should be removed before submitting your work.
-    	System.err.printf("[trace] MovieDB: SEARCH [%s]\n", term);
-    	
-    	// FIXME remove this code and return an appropriate MyLinkedList<MovieDBItem> instance.
-    	// This code is supplied for avoiding compilation error.   
         MyLinkedList<MovieDBItem> results = new MyLinkedList<MovieDBItem>();
-
+        String regex = "^.*"+term+".*$";
+        Genre tmp = head;
+        while(tmp.next != null) {
+        	tmp = tmp.next;
+        	Node<String> tmp2 = tmp.movielist.head;
+        	while(tmp2.getNext() != null) {
+        		tmp2 = tmp2.getNext();
+        		if(tmp2.getItem().matches(regex)) {
+        			MovieDBItem item = new MovieDBItem(tmp.getItem(), tmp2.getItem());
+        			results.add(item);
+        		}
+        	}
+        }
         return results;
     }
     

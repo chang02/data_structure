@@ -10,21 +10,6 @@ public class MyLinkedList<T> implements ListInterface<T> {
 	public MyLinkedList() {
 		head = new Node<T>(null);
 	}
-
-    /**
-     * {@code Iterable<T>}�몴占� �뤃�뗭겱占쎈릭占쎈연 iterator() 筌롫뗄�꺖占쎈굡�몴占� 占쎌젫�⑤벏釉�占쎈뮉 占쎄깻占쎌삋占쎈뮞占쎌벥 占쎌뵥占쎈뮞占쎄쉘占쎈뮞占쎈뮉
-     * 占쎈뼄占쎌벉�⑨옙 揶쏆늿占� 占쎌쁽獄쏉옙 for-each �눧紐껋씩占쎌벥 占쎌굺占쎄문占쎌뱽 癰귨옙 占쎈땾 占쎌뿳占쎈뼄.
-     * 
-     * <pre>
-     *  for (T item: iterable) {
-     *  	item.someMethod();
-     *  }
-     * </pre>
-     * 
-     * @see PrintCmd#apply(MovieDB)
-     * @see SearchCmd#apply(MovieDB)
-     * @see java.lang.Iterable#iterator()
-     */
     public final Iterator<T> iterator() {
     	return new MyLinkedListIterator<T>(this);
     }
