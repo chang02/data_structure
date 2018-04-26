@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.Stack;
+import java.util.ArrayList;
 
 public class CalculatorTest
 {
@@ -32,14 +34,14 @@ public class CalculatorTest
 		
 		System.out.println(post);
 		
-		int result;
-		result = calculate(post);
+		int result = calculate(post);
 	}
 	
 	static String infixToPostfix(String infix)
 	{
 		char[] infix_arr = infix.toCharArray();
-		
+		Stack<Character> s = new Stack<>();
+		ArrayList<Integer> l = new ArrayList<>();
 		return "postfix";
 	}
 	static int calculate(String post)
