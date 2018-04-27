@@ -35,7 +35,6 @@ class DeleteCmd extends AbstractConsoleCommand {
 
 	@Override
 	public void apply(MovieDB db) throws Exception {
-		System.err.printf("[trace] DELETE [genre=%s, title=%s]\n", genre, movie);
 		
 		db.delete(new MovieDBItem(genre, movie));
 	}
@@ -59,7 +58,6 @@ class InsertCmd extends AbstractConsoleCommand {
 
 	@Override
 	public void apply(MovieDB db) throws Exception {
-		System.err.printf("[trace] INSERT [genre=%s, title=%s]\n", genre, movie);
 		db.insert(new MovieDBItem(genre, movie));
 	}
 }
@@ -77,7 +75,6 @@ class PrintCmd extends AbstractConsoleCommand {
 
 	@Override
 	public void apply(MovieDB db) throws Exception {
-		System.err.printf("[trace] PRINT\n");
 
 		MyLinkedList<MovieDBItem> result = db.items();
 
@@ -107,7 +104,6 @@ class SearchCmd extends AbstractConsoleCommand {
 
 	@Override
 	public void apply(MovieDB db) throws Exception {
-		System.err.printf("[trace] SEARCH [%s]\n", term);
 
 		MyLinkedList<MovieDBItem> result = db.search(term);
 

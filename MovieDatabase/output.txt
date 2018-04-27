@@ -1,0 +1,6 @@
+(A, QWER)
+(AC, EE)
+(C, ASDF)
+(A, QWER)
+(AC, EE)
+(C, ASDF)
