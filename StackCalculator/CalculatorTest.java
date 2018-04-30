@@ -36,6 +36,9 @@ public class CalculatorTest
 		}
 		input = input.replaceAll(" ","");
 		input = input.replaceAll("\t", "");
+		if(input.contains("()")) {
+			error = true;
+		}
 		if(input.compareTo("") == 0){
 			System.out.println("ERROR");
 		}
@@ -192,6 +195,10 @@ public class CalculatorTest
 						s.push(tmp2%tmp1);
 					}
 					else if(post.get(i).compareTo("^") == 0){
+						if(tmp1 < 0) {
+							error = true;
+							return 0;
+						}
 						s.push((long)Math.pow(tmp2, tmp1));
 					}
 				}
