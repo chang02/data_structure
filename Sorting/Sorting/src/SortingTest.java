@@ -222,6 +222,7 @@ public class SortingTest
 		}
 	}
 	private static void merge(int value[], int start, int m, int end){
+		//copy from https://www.geeksforgeeks.org/merge-sort/
 		int left_size = m - start + 1;
 		int right_size = end - m;
 		
@@ -340,7 +341,7 @@ public class SortingTest
 	            count[getnumber(value[i], x)]--;
 			}
 		}
-		//copy
+		//copy result
 		int tmp_i = 0;
 		for(int i=0;i<temp2.length;i++){
 			value[tmp_i] = temp2[i];
