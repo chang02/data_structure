@@ -97,7 +97,7 @@ public class SortingTest
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	private static int[] DoBubbleSort(int[] value)
 	{
-		//refer wiki
+		//copy from https://ko.wikipedia.org/wiki/%EA%B1%B0%ED%92%88_%EC%A0%95%EB%A0%AC
 		int temp=0;
 		for(int i=0;i<value.length;i++){
 			for(int j=1;j<value.length-i;j++){
@@ -114,7 +114,7 @@ public class SortingTest
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	private static int[] DoInsertionSort(int[] value)
 	{
-		//refer wiki
+		//copy from https://ko.wikipedia.org/wiki/%EC%82%BD%EC%9E%85_%EC%A0%95%EB%A0%AC
 		for(int i=1;i<value.length;i++){
 			int temp = value[i];
 			int j = i - 1;
@@ -130,7 +130,7 @@ public class SortingTest
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	private static int[] DoHeapSort(int[] value)
 	{
-		//by myself
+		//implemented by myself
 		int[] heap = new int[value.length];
 		for(int i=0;i<value.length;i++){
 			int index_copy = i;
@@ -203,16 +203,16 @@ public class SortingTest
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	private static int[] DoMergeSort(int[] value)
 	{
-		//by myself
+		//implemented by myself
 		merge_sort(value, 0, value.length-1);
 		return (value);
 	}
 	private static void merge_sort(int num[], int start, int end){
-		int median = (start + end)/2;
+		int m = (start + end)/2;
 		if(start < end){
-			merge_sort(num, start, median);
-			merge_sort(num, median+1, end);
-			merge(num, start, median, end);
+			merge_sort(num, start, m);
+			merge_sort(num, m+1, end);
+			merge(num, start, m, end);
 		}
 	}
 	private static void merge(int num[], int start, int median, int end){
@@ -252,6 +252,7 @@ public class SortingTest
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	private static int[] DoQuickSort(int[] value)
 	{
+		//implemented by myself
 		quick_sort(value, 0, value.length-1);
 		return (value);
 	}
@@ -285,7 +286,7 @@ public class SortingTest
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	private static int[] DoRadixSort(int[] value)
 	{
-		//refer geeksforgeeks.org/radix-sort/
+		//modification from geeksforgeeks.org/radix-sort/
 		int max = getmax(value);
 		for(int i=1;max/i>0;i=i*10){
 			countingsort(value, i);
@@ -293,24 +294,36 @@ public class SortingTest
 		return (value);
 	}
 	private static void countingsort(int[] value, int x){
+		//modification from geeksforgeeks.org/radix-sort/
 		int temp[] = new int[value.length];
+		int temp2[] = new int[value.length];
 		int count[] = new int[10];
+		int mcount[] = new int[10];
 		//initialize
 		for(int i=0;i<10;i++){
 			count[i] = 0;
+			mcount[i] = 0;
 		}
 		
 		//make count
 		for(int i=0;i<value.length;i++){
-			count[getnumber(value[i], x)]++;
+			if(value[i] >= 0)
+				count[getnumber(value[i], x)]++;
+			else
+				mcount[getnumber(value[i]*(-1), x)]++;
 		}
 		//make countsum
 		for(int i=1;i<10;i++){
 			count[i] += count[i-1];
+			mcount[i] += mcount[i-1];
 		}
 		//make result
+		for(int i=value.length-1;i>=0;i++) {
+			temp2[mcount[getnumber(value[i]*(-1), x)] - 1] = value[i];
+            mcount[getnumber(value[i], x)]--;
+		}
 		for(int i=value.length-1;i>=0;i--){
-			temp[count[getnumber(value[i], x)] - 1] = value[i];
+			temp[count[getnumber(value[i]*(-1), x)] - 1] = value[i];
             count[getnumber(value[i], x)]--;
 		}
 		//copy
