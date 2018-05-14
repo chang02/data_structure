@@ -76,6 +76,12 @@ public class SortingTest
 				{
 					// 난수일 경우 수행시간을 출력한다.
 					System.out.println((System.currentTimeMillis() - t) + " ms");
+					
+					//for test
+//					for (int i = 0; i < newvalue.length; i++)
+//					{
+//						System.out.println(newvalue[i]);
+//					}
 				}
 				else
 				{
@@ -207,45 +213,49 @@ public class SortingTest
 		merge_sort(value, 0, value.length-1);
 		return (value);
 	}
-	private static void merge_sort(int num[], int start, int end){
+	private static void merge_sort(int value[], int start, int end){
 		int m = (start + end)/2;
 		if(start < end){
-			merge_sort(num, start, m);
-			merge_sort(num, m+1, end);
-			merge(num, start, m, end);
+			merge_sort(value, start, m);
+			merge_sort(value, m+1, end);
+			merge(value, start, m, end);
 		}
 	}
-	private static void merge(int num[], int start, int median, int end){
-		int i, j, k;
-		int[] temp = new int[num.length];
-		i = start;
-		j = median + 1;
-		k = start;
-		while(i <= median && j <= end){
-			if(num[i] < num[j]){
-				temp[k] = num[i];
+	private static void merge(int value[], int start, int m, int end){
+		int left_size = m - start + 1;
+		int right_size = end - m;
+		
+		int[] left = new int[left_size];
+		int[] right = new int[right_size];
+		
+		for(int i=0;i<left_size;i++){
+			left[i] = value[start+i];
+		}
+		for(int j=0;j<right_size;j++){
+			right[j] = value[m+1+j];
+		}
+		int i=0, j=0;
+		int k = start;
+		while(i < left_size && j < right_size){
+			if(left[i] <= right[j]){
+				value[k] = left[i];
 				i++;
 			}
 			else{
-				temp[k] = num[j];
+				value[k] = right[j];
 				j++;
 			}
 			k++;
 		}
-		if(i > median){
-			for(;j<=end;j++){
-				temp[k] = num[j];
-				k++;
-			}
+		while(i < left_size){
+			value[k] = left[i];
+			i++;
+			k++;
 		}
-		else if(j > end){
-			for(;i<=median;i++){
-				temp[k] = num[i];
-				k++;
-			}
-		}
-		for(i=start;i<=end;i++){
-			num[i] = temp[i];
+		while(j < right_size){
+			value[k] = right[j];
+			j++;
+			k++;
 		}
 	}
 
@@ -295,8 +305,6 @@ public class SortingTest
 	}
 	private static void countingsort(int[] value, int x){
 		//modification from geeksforgeeks.org/radix-sort/
-		int temp[] = new int[value.length];
-		int temp2[] = new int[value.length];
 		int count[] = new int[10];
 		int mcount[] = new int[10];
 		//initialize
@@ -315,20 +323,32 @@ public class SortingTest
 		//make countsum
 		for(int i=1;i<10;i++){
 			count[i] += count[i-1];
-			mcount[i] += mcount[i-1];
 		}
+		for(int i=9;i>=1;i--){
+			mcount[i-1] += mcount[i];
+		}
+		int temp[] = new int[count[count.length-1]];
+		int temp2[] = new int[mcount[0]];
 		//make result
-		for(int i=value.length-1;i>=0;i++) {
-			temp2[mcount[getnumber(value[i]*(-1), x)] - 1] = value[i];
-            mcount[getnumber(value[i], x)]--;
-		}
 		for(int i=value.length-1;i>=0;i--){
-			temp[count[getnumber(value[i]*(-1), x)] - 1] = value[i];
-            count[getnumber(value[i], x)]--;
+			if(value[i] < 0){
+				temp2[mcount[getnumber(value[i]*(-1), x)] - 1] = value[i];
+	            mcount[getnumber(value[i]*(-1), x)]--;
+			}
+			else{
+				temp[count[getnumber(value[i], x)] - 1] = value[i];
+	            count[getnumber(value[i], x)]--;
+			}
 		}
 		//copy
-		for(int i=0;i<value.length;i++){
-			value[i] = temp[i];
+		int tmp_i = 0;
+		for(int i=0;i<temp2.length;i++){
+			value[tmp_i] = temp2[i];
+			tmp_i++;
+		}
+		for(int i=0;i<temp.length;i++){
+			value[tmp_i] = temp[i];
+			tmp_i++;
 		}
 	}
 	private static int getnumber(int number, int n){
