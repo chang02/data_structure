@@ -1,5 +1,5 @@
 public class AVLTree {
-	private TreeNode root;
+	TreeNode root;
 	
 	public AVLTree(){
 		this.root = null;
@@ -59,7 +59,7 @@ public class AVLTree {
 		node.setLeft(b);
 		
 		if(isroot)
-			this.root = a; 
+			this.root = a;
 		
 		return a;
 	}
