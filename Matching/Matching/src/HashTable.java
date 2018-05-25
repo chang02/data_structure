@@ -1,24 +1,26 @@
-import java.util.ArrayList;
 public class HashTable {
-	static AVLTree[] table;
+	private AVLTree[] table;
 	
 	public HashTable() {
-		table = new AVLTree[100];
+		this.table = new AVLTree[100];
 	}
-	public static void insert(String s, Pair p) {
+	public void insert(String s, Pair p) {
 		char arr[] = s.toCharArray();
 		int sum = 0;
 		for(int i=0;i<arr.length;i++) {
 			sum = sum + (int)arr[i];
 		}
 		int index = sum % 100;
-		if(table[index] == null) {
+		if(this.table[index] == null) {
 			 AVLTree t = new AVLTree();
 			 t.insert(t.root, s, p);
-			 table[index] = t;
+			 this.table[index] = t;
 		}
 		else {
-			table[index].insert(table[index].root, s, p);
+			this.table[index].insert(this.table[index].root, s, p);
 		}
+	}
+	public void print(int index){
+		this.table[index].preprint(this.table[index].root);
 	}
 }

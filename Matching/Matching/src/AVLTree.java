@@ -81,4 +81,14 @@ public class AVLTree {
 		
 		return a;
 	}
+	public void preprint(TreeNode node){
+		if(node == null){
+			return;
+		}
+		for(int i=0;i<node.getList().size();i++){
+			System.out.print("(" + node.getList().get(i).x + ", " + node.getList().get(i).y + ")");
+		}
+		preprint(node.getLeft());
+		preprint(node.getRight());
+	}
 }
