@@ -1,56 +1,57 @@
+import java.util.ArrayList;
+
 public class AVLTree {
 	TreeNode root;
 	
 	public AVLTree(){
 		this.root = null;
 	}
-	public void checkbalance(TreeNode node, String key) {
+	public TreeNode checkbalance(TreeNode node, String key) {
 		if(node.getHeightDiff() > 1) {
 			if(key.compareTo(node.getLeft().getKey()) < 0) {
 				node = this.rrotate(node);
 			}
 			else if(key.compareTo(node.getLeft().getKey()) > 0) {
-				node = this.lrotate(node.getLeft());
+				node.setLeft(this.lrotate(node.getLeft()));
 				node = this.rrotate(node);
 			}
 		}
 		else if(node.getHeightDiff() < -1) {
-			if(key.compareTo(node.getLeft().getKey()) > 0) {
+			if(key.compareTo(node.getRight().getKey()) > 0) {
 				node = this.lrotate(node);
 			}
-			if(key.compareTo(node.getLeft().getKey()) < 0) {
-				node = this.rrotate(node.getRight());
+			else if(key.compareTo(node.getRight().getKey()) < 0) {
+				node.setRight(this.rrotate(node.getRight()));
 				node = this.lrotate(node);
 			}
 		}
-		else {
-			return;
-		}
+		return node;
 	}
-	public void insert(TreeNode node, String key, Pair p) {
+	public TreeNode insert(TreeNode node, String key, Pair p) {
 		if(node == null) {
 			TreeNode newNode = new TreeNode(key, p);
-			node = newNode;
-			return;
+			return newNode;
 		}
 		else if(key.compareTo(node.getKey()) == 0) {
 			node.getList().add(p);
-			return;
+			return node;
 		}
 		else if(key.compareTo(node.getKey()) > 0) {
-			this.insert(node.getRight(), key, p);
+			node.setRight(this.insert(node.getRight(), key, p));
 		}
 		else if(key.compareTo(node.getKey()) < 0) {
-			this.insert(node.getLeft(), key, p);
+			node.setLeft(this.insert(node.getLeft(), key, p));
 		}
-		this.checkbalance(node, key);
+		node = this.checkbalance(node, key);
+		
+		return node;
 	}
 	public TreeNode rrotate(TreeNode node) {
-		boolean isroot;
-		if(node == this.root)
-			isroot = true;
-		else
-			isroot = false;
+//		boolean isroot;
+//		if(node == this.root)
+//			isroot = true;
+//		else
+//			isroot = false;
 		
 		TreeNode a = node.getLeft();
 		TreeNode b = a.getRight();
@@ -58,17 +59,17 @@ public class AVLTree {
 		a.setRight(node);
 		node.setLeft(b);
 		
-		if(isroot)
-			this.root = a;
+//		if(isroot)
+//			this.root = a;
 		
 		return a;
 	}
 	public TreeNode lrotate(TreeNode node) {
-		boolean isroot;
-		if(node == this.root)
-			isroot = true;
-		else
-			isroot = false;
+//		boolean isroot;
+//		if(node == this.root)
+//			isroot = true;
+//		else
+//			isroot = false;
 		
 		TreeNode a = node.getRight();
 		TreeNode b = a.getLeft();
@@ -76,9 +77,18 @@ public class AVLTree {
 		a.setLeft(node);
 		node.setRight(b);
 		
-		if(isroot)
-			this.root = a;
+//		if(isroot)
+//			this.root = a;
 		
 		return a;
+	}
+	public ArrayList<String> getKeys(ArrayList<String> keys, TreeNode node) {
+		if(node == null) {
+			return keys;
+		}
+		keys.add(node.getKey());
+		this.getKeys(keys, node.getLeft());
+		this.getKeys(keys, node.getRight());
+		return keys;
 	}
 }

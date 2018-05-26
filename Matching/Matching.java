@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 
 public class Matching
@@ -6,7 +7,7 @@ public class Matching
 	public static void main(String args[])
 	{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+		HashTable h = new HashTable();
 		while (true)
 		{
 			try
@@ -15,7 +16,7 @@ public class Matching
 				if (input.compareTo("QUIT") == 0)
 					break;
 
-				command(input);
+				command(h, input);
 			}
 			catch (IOException e)
 			{
@@ -24,16 +25,34 @@ public class Matching
 		}
 	}
 
-	private static void command(String input)
+	private static void command(HashTable h, String input) throws IOException
 	{
-		HashTable h = new HashTable();
-		System.out.println("asdf");
-//		if(input.charAt(0) == '<') {
-//			String filename = input.split(" ")[1];
-//			load_file(filename);
-//		}
+		if(input.charAt(0) == '<') {
+			String filepath = input.split(" ")[1];
+			load_file(h, filepath);
+		}
+		if(input.charAt(0) == '@') {
+			int index = Integer.parseInt(input.split(" ")[1]);
+			h.print_index(index);
+		}
 	}
-	private static void load_file(String filename){
+	private static void load_file(HashTable h, String filepath) throws IOException{
 		
+		ArrayList<String> str = new ArrayList<String>();
+		BufferedReader input = new BufferedReader(new FileReader(filepath));
+		String s;
+		while ((s = input.readLine()) != null) {
+			str.add(s);
+		}
+		
+		for(int i=0;i<str.size();i++) {			
+			char[] temp_chr = str.get(i).toCharArray();
+			for(int j=0;j<temp_chr.length-6+1;j++) {
+				String temp_str = new String(temp_chr, j, 6);
+				System.out.println(temp_str);
+				Pair temp_p = new Pair(i+1,j+1);
+				h.insert(temp_str, temp_p);
+			}
+		}
 	}
 }
