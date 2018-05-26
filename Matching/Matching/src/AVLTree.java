@@ -47,38 +47,20 @@ public class AVLTree {
 		return node;
 	}
 	public TreeNode rrotate(TreeNode node) {
-//		boolean isroot;
-//		if(node == this.root)
-//			isroot = true;
-//		else
-//			isroot = false;
-		
 		TreeNode a = node.getLeft();
 		TreeNode b = a.getRight();
 		
 		a.setRight(node);
 		node.setLeft(b);
-		
-//		if(isroot)
-//			this.root = a;
-		
+			
 		return a;
 	}
-	public TreeNode lrotate(TreeNode node) {
-//		boolean isroot;
-//		if(node == this.root)
-//			isroot = true;
-//		else
-//			isroot = false;
-		
+	public TreeNode lrotate(TreeNode node) {		
 		TreeNode a = node.getRight();
 		TreeNode b = a.getLeft();
 		
 		a.setLeft(node);
 		node.setRight(b);
-		
-//		if(isroot)
-//			this.root = a;
 		
 		return a;
 	}

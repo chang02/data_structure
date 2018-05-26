@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 public class HashTable {
-	AVLTree[] table = new AVLTree[100];
-	
+	AVLTree[] table;
+
 	public HashTable() {
-		return;
+		this.table = new AVLTree[100];
 	}
 	public void insert(String s, Pair p) {
 		char arr[] = s.toCharArray();
