@@ -6,6 +6,22 @@ public class AVLTree {
 	public AVLTree(){
 		this.root = null;
 	}
+	public ArrayList<Pair> search(String key){
+		ArrayList<Pair> l = new ArrayList<Pair>();
+		TreeNode curr = this.root;
+		while(curr != null) {
+			if(curr.getKey().compareTo(key) == 0)
+				break;
+			else if(curr.getKey().compareTo(key) > 0)
+				curr = curr.getRight();
+			else
+				curr = curr.getLeft();
+		}
+		for(int i=0;i<curr.getList().size();i++) {
+			l.add(curr.getList().get(i));
+		}
+		return l;
+	}
 	public TreeNode checkbalance(TreeNode node, String key) {
 		if(node.getHeightDiff() > 1) {
 			if(key.compareTo(node.getLeft().getKey()) < 0) {

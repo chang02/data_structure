@@ -5,4 +5,10 @@ public class Pair {
 		this.x = a;
 		this.y = b;
 	}
+	public int compareTo(Pair p) {
+		if(this.x == p.x)
+			return 0;
+		else
+			return -1;
+	}
 }

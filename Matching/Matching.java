@@ -31,9 +31,13 @@ public class Matching
 			String filepath = input.split(" ")[1];
 			load_file(h, filepath);
 		}
-		if(input.charAt(0) == '@') {
+		else if(input.charAt(0) == '@') {
 			int index = Integer.parseInt(input.split(" ")[1]);
 			h.print_index(index);
+		}
+		else if(input.charAt(0) == '?') {
+			String s = input.split(" ")[1];
+			h.search(s);
 		}
 	}
 	private static void load_file(HashTable h, String filepath) throws IOException{
