@@ -12,10 +12,13 @@ public class AVLTree {
 		while(curr != null) {
 			if(curr.getKey().compareTo(key) == 0)
 				break;
-			else if(curr.getKey().compareTo(key) > 0)
+			else if(curr.getKey().compareTo(key) < 0)
 				curr = curr.getRight();
 			else
 				curr = curr.getLeft();
+		}
+		if(curr == null){
+			return l;
 		}
 		for(int i=0;i<curr.getList().size();i++) {
 			l.add(curr.getList().get(i));

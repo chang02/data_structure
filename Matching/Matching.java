@@ -36,7 +36,7 @@ public class Matching
 			h.print_index(index);
 		}
 		else if(input.charAt(0) == '?') {
-			String s = input.split(" ")[1];
+			String s = input.substring(2);
 			h.search(s);
 		}
 	}
@@ -53,7 +53,6 @@ public class Matching
 			char[] temp_chr = str.get(i).toCharArray();
 			for(int j=0;j<temp_chr.length-6+1;j++) {
 				String temp_str = new String(temp_chr, j, 6);
-				System.out.println(temp_str);
 				Pair temp_p = new Pair(i+1,j+1);
 				h.insert(temp_str, temp_p);
 			}

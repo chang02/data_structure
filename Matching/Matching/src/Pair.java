@@ -6,7 +6,7 @@ public class Pair {
 		this.y = b;
 	}
 	public int compareTo(Pair p) {
-		if(this.x == p.x)
+		if(this.x == p.x && this.y == p.y)
 			return 0;
 		else
 			return -1;
