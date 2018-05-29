@@ -15,6 +15,9 @@ public class Matching
 				String input = br.readLine();
 				if (input.compareTo("QUIT") == 0)
 					break;
+				if(input.charAt(0) == '<') {
+					h = new HashTable();
+				}
 
 				command(h, input);
 			}
