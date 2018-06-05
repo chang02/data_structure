@@ -30,6 +30,10 @@ public class Subway {
 			  }
 			}
 			in.close();
+			ArrayList<String> t = name.get("Á¾·Î3°¡");
+			for(int i=0;i<t.size();i++) {
+				System.out.println(t.get(i));
+			}
 		}
 		catch (IOException e){
 			System.exit(1);
@@ -57,15 +61,20 @@ public class Subway {
 		ArrayList<String> keys2 = name.get(nodename2);
 		initialize_all_nodes(node);
 		ArrayList<Node> temp_result1 = dijkstra(node.get(keys1.get(0)), node.get(keys2.get(0)), v);
+		long temp_degree = temp_result1.get(0).degree;
 		for(int i=0;i<keys1.size();i++) {
 			for(int j=0;j<keys2.size();j++) {
-				initialize_all_nodes(node);
 				if(i==0 && j==0)
 					continue;
+				initialize_all_nodes(node);
 				Node start = node.get(keys1.get(i));
 				Node end = node.get(keys2.get(j));
-				ArrayList<Node> temp_result2 = dijkstra(start, end, v);
-				temp_result1 = compare(temp_result1, temp_result2);
+				ArrayList<Node> temp_result2 = new ArrayList<Node>();
+				temp_result2 = dijkstra(start, end, v);
+				if(temp_degree > temp_result2.get(0).degree) {
+					temp_result1 = temp_result2;
+					temp_degree = temp_result1.get(0).degree;
+				}
 			}
 		}
 		Node temp = temp_result1.get(temp_result1.size()-1);
@@ -84,7 +93,8 @@ public class Subway {
 			}
 			temp = temp_result1.get(i);
 		}
-		System.out.println(temp.name);	
+		System.out.println(temp.name);
+		System.out.println(temp_degree);
 	}
 	public static ArrayList<Node> compare(ArrayList<Node> a, ArrayList<Node> b){
 		if(a.get(0).degree < b.get(0).degree)
