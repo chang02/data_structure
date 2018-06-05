@@ -1,8 +1,14 @@
 import java.io.*;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.PriorityQueue;
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class Subway {
+	private static final String Iterator = null;
 	public static void main(String[] args) {
 		HashMap<String, ArrayList<String>> name = new HashMap<String, ArrayList<String>>();
 		HashMap<String, Node> node = new HashMap<String, Node>();
@@ -29,17 +35,92 @@ public class Subway {
 			System.exit(1);
 		}
 		try{
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));		 
-			String line = in.readLine();
-			findpath(line.split(" ")[0], line.split(" ")[1]);
+			while(true) {
+				BufferedReader in = new BufferedReader(new InputStreamReader(System.in));		 
+				String line = in.readLine();
+				if(line.compareTo("QUIT") == 0)
+					break;
+				findpath(node, name, line.split(" ")[0], line.split(" ")[1]);
+			}
 		}
 		catch(IOException e){
 			System.exit(1);
 		}
 		
 	}
-	public static void findpath(String nodename1, String nodename2){
-		
+	public static void findpath(HashMap<String, Node> node, HashMap<String, ArrayList<String>> name, String nodename1, String nodename2){
+		ArrayList<String> keys1 = name.get(nodename1);
+		ArrayList<String> keys2 = name.get(nodename2);
+		ArrayList<Node> temp_result1 = dijkstra(node.get(keys1.get(0)), node.get(keys2.get(0)));
+		for(int i=0;i<keys1.size();i++) {
+			for(int j=0;j<keys2.size();j++) {
+				initialize_all_nodes(node);
+				if(i==0 && j==0)
+					continue;
+				Node start = node.get(keys1.get(i));
+				Node end = node.get(keys2.get(j));
+				ArrayList<Node> temp_result2 = dijkstra(start, end);
+				temp_result1 = compare(temp_result1, temp_result2);
+			}
+		}
+		Node temp = temp_result1.get(temp_result1.size()-1);
+		for(int i=temp_result1.size()-2;i>=0;i--) {
+			if(temp_result1.get(i).name.compareTo(temp.name) == 0) {
+				if(temp_result1.get(i).line.compareTo(temp.line) == 0) {
+					System.out.print(temp.name + " ");
+				}
+				else {
+					System.out.print("[" + temp.name + "] ");
+				}
+				i--;
+			}
+			else {
+				System.out.print(temp.name + " ");
+			}
+			temp = temp_result1.get(i);
+		}
+		System.out.println(temp.name);	
+	}
+	public static ArrayList<Node> compare(ArrayList<Node> a, ArrayList<Node> b){
+		if(a.get(0).degree < b.get(0).degree)
+			return a;
+		else
+			return b;
+	}
+	public static ArrayList<Node> dijkstra(Node node, Node end) {
+		node.finished = true;
+		node.degree = 0;
+		Node curr = node;
+		PriorityQueue<Node> q = new PriorityQueue<Node>();
+		while(curr != end) {
+			for(Edge edge: curr.outedge) {
+				if(edge.nextnode.finished == false) {
+					if(curr.degree + edge.weight < edge.nextnode.degree) {
+						edge.nextnode.degree = curr.degree + edge.weight;
+						edge.nextnode.from = curr;
+					}
+					q.offer(edge.nextnode);
+				}
+			}
+			curr = q.poll();
+			curr.finished = true;
+		}
+		ArrayList<Node> a = new ArrayList<Node>();
+		while(curr != null){
+			a.add(curr);
+			curr = curr.from;
+		}
+		return a;
+	}
+	public static void initialize_all_nodes(HashMap<String, Node> node) {
+		Iterator iterator = node.entrySet().iterator();
+		while(iterator.hasNext()) {
+			Entry a = (Map.Entry) iterator.next();
+			String tmpkey = (String) a.getKey();
+			Node tmpnode = (Node) a.getValue();
+			tmpnode.initialize();
+			node.put(tmpkey, tmpnode);
+		}
 	}
 	public static void makenode(HashMap<String, Node> node, HashMap<String, ArrayList<String>> name, String line){
 		String[] line_arr = line.split(" ");
@@ -59,9 +140,11 @@ public class Subway {
 				tempedge1.prevnode = station;
 				tempedge1.nextnode = tempnode;
 				tempedge1.transfer = true;
+				tempedge1.weight = 5;
 				tempedge2.prevnode = tempnode;
 				tempedge2.nextnode = station;
 				tempedge2.transfer = true;
+				tempedge2.weight = 5;
 				
 				station.outedge.add(tempedge1);
 				station.inedge.add(tempedge2);
@@ -71,8 +154,8 @@ public class Subway {
 				node.put(tempkey, tempnode);
 			}
 			node.put(key, station);
-			
-			
+			l.add(key);
+			name.put(stationname, l);
 		}
 		else{
 			Node station = new Node(stationname, linenumber);
