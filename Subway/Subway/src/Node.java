@@ -6,7 +6,7 @@ public class Node implements Comparable<Node> {
 	LinkedList<Edge> inedge;
 	
 	boolean finished;
-	int degree;
+	long degree;
 	Node from;
 	
 	public Node(String name, String line){
@@ -16,12 +16,12 @@ public class Node implements Comparable<Node> {
 		inedge = new LinkedList<Edge>();
 		
 		finished = false;
-		degree = Integer.MAX_VALUE;
+		degree = (long)Integer.MAX_VALUE * (long)Integer.MAX_VALUE;
 		from = null;
 	}
 	public void initialize() {
 		finished = false;
-		degree = Integer.MAX_VALUE;
+		degree = (long)Integer.MAX_VALUE * (long)Integer.MAX_VALUE;
 		from = null;
 	}
 	

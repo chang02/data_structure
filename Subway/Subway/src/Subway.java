@@ -40,7 +40,10 @@ public class Subway {
 				String line = in.readLine();
 				if(line.compareTo("QUIT") == 0)
 					break;
-				findpath(node, name, line.split(" ")[0], line.split(" ")[1]);
+				if(line.split(" ").length == 2)
+					findpath(node, name, line.split(" ")[0], line.split(" ")[1], 0);
+				else if(line.split(" ").length == 3 && line.split(" ")[2].compareTo("!") == 0)
+					findpath(node, name, line.split(" ")[0], line.split(" ")[1], 1);
 			}
 		}
 		catch(IOException e){
@@ -48,10 +51,12 @@ public class Subway {
 		}
 		
 	}
-	public static void findpath(HashMap<String, Node> node, HashMap<String, ArrayList<String>> name, String nodename1, String nodename2){
+	
+	public static void findpath(HashMap<String, Node> node, HashMap<String, ArrayList<String>> name, String nodename1, String nodename2, int v){
 		ArrayList<String> keys1 = name.get(nodename1);
 		ArrayList<String> keys2 = name.get(nodename2);
-		ArrayList<Node> temp_result1 = dijkstra(node.get(keys1.get(0)), node.get(keys2.get(0)));
+		initialize_all_nodes(node);
+		ArrayList<Node> temp_result1 = dijkstra(node.get(keys1.get(0)), node.get(keys2.get(0)), v);
 		for(int i=0;i<keys1.size();i++) {
 			for(int j=0;j<keys2.size();j++) {
 				initialize_all_nodes(node);
@@ -59,7 +64,7 @@ public class Subway {
 					continue;
 				Node start = node.get(keys1.get(i));
 				Node end = node.get(keys2.get(j));
-				ArrayList<Node> temp_result2 = dijkstra(start, end);
+				ArrayList<Node> temp_result2 = dijkstra(start, end, v);
 				temp_result1 = compare(temp_result1, temp_result2);
 			}
 		}
@@ -87,7 +92,7 @@ public class Subway {
 		else
 			return b;
 	}
-	public static ArrayList<Node> dijkstra(Node node, Node end) {
+	public static ArrayList<Node> dijkstra(Node node, Node end, int v) {
 		node.finished = true;
 		node.degree = 0;
 		Node curr = node;
@@ -95,11 +100,20 @@ public class Subway {
 		while(curr != end) {
 			for(Edge edge: curr.outedge) {
 				if(edge.nextnode.finished == false) {
-					if(curr.degree + edge.weight < edge.nextnode.degree) {
-						edge.nextnode.degree = curr.degree + edge.weight;
-						edge.nextnode.from = curr;
+					if(v == 0) {
+						if(curr.degree + edge.weight < edge.nextnode.degree) {
+							edge.nextnode.degree = curr.degree + edge.weight;
+							edge.nextnode.from = curr;
+						}
+						q.offer(edge.nextnode);
 					}
-					q.offer(edge.nextnode);
+					else {
+						if(curr.degree + edge.weight2 < edge.nextnode.degree) {
+							edge.nextnode.degree = curr.degree + edge.weight2;
+							edge.nextnode.from = curr;
+						}
+						q.offer(edge.nextnode);
+					}
 				}
 			}
 			curr = q.poll();
@@ -139,12 +153,12 @@ public class Subway {
 				
 				tempedge1.prevnode = station;
 				tempedge1.nextnode = tempnode;
-				tempedge1.transfer = true;
 				tempedge1.weight = 5;
+				tempedge1.weight2 = (long)Integer.MAX_VALUE * 1000000;
 				tempedge2.prevnode = tempnode;
 				tempedge2.nextnode = station;
-				tempedge2.transfer = true;
 				tempedge2.weight = 5;
+				tempedge2.weight2 = (long)Integer.MAX_VALUE * 1000000;
 				
 				station.outedge.add(tempedge1);
 				station.inedge.add(tempedge2);
@@ -177,6 +191,7 @@ public class Subway {
 		edge.prevnode = node1;
 		edge.nextnode = node2;
 		edge.weight = weight;
+		edge.weight2 = weight;
 		
 		node1.outedge.add(edge);
 		node2.inedge.add(edge);
