@@ -30,10 +30,6 @@ public class Subway {
 			  }
 			}
 			in.close();
-			ArrayList<String> t = name.get("Á¾·Î3°¡");
-			for(int i=0;i<t.size();i++) {
-				System.out.println(t.get(i));
-			}
 		}
 		catch (IOException e){
 			System.exit(1);
