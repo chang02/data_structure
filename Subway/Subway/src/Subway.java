@@ -58,6 +58,7 @@ public class Subway {
 		initialize_all_nodes(node);
 		ArrayList<Node> temp_result1 = dijkstra(node.get(keys1.get(0)), node.get(keys2.get(0)), v);
 		long temp_degree = temp_result1.get(0).degree;
+		long real_result = temp_result1.get(0).real_degree;
 		for(int i=0;i<keys1.size();i++) {
 			for(int j=0;j<keys2.size();j++) {
 				if(i==0 && j==0)
@@ -70,6 +71,7 @@ public class Subway {
 				if(temp_degree > temp_result2.get(0).degree) {
 					temp_result1 = temp_result2;
 					temp_degree = temp_result1.get(0).degree;
+					real_result = temp_result1.get(0).real_degree;
 				}
 			}
 		}
@@ -90,7 +92,7 @@ public class Subway {
 			temp = temp_result1.get(i);
 		}
 		System.out.println(temp.name);
-		System.out.println(temp_degree);
+		System.out.println(real_result);
 	}
 	public static ArrayList<Node> compare(ArrayList<Node> a, ArrayList<Node> b){
 		if(a.get(0).degree < b.get(0).degree)
@@ -101,6 +103,7 @@ public class Subway {
 	public static ArrayList<Node> dijkstra(Node node, Node end, int v) {
 		node.finished = true;
 		node.degree = 0;
+		node.real_degree = 0;
 		Node curr = node;
 		PriorityQueue<Node> q = new PriorityQueue<Node>();
 		while(curr != end) {
@@ -109,6 +112,7 @@ public class Subway {
 					if(v == 0) {
 						if(curr.degree + edge.weight < edge.nextnode.degree) {
 							edge.nextnode.degree = curr.degree + edge.weight;
+							edge.nextnode.real_degree = curr.real_degree + edge.weight;
 							edge.nextnode.from = curr;
 						}
 						q.offer(edge.nextnode);
@@ -116,6 +120,7 @@ public class Subway {
 					else {
 						if(curr.degree + edge.weight2 < edge.nextnode.degree) {
 							edge.nextnode.degree = curr.degree + edge.weight2;
+							edge.nextnode.real_degree = curr.real_degree + edge.weight;
 							edge.nextnode.from = curr;
 						}
 						q.offer(edge.nextnode);

@@ -7,6 +7,7 @@ public class Node implements Comparable<Node> {
 	
 	boolean finished;
 	long degree;
+	long real_degree;
 	Node from;
 	
 	public Node(String name, String line){
@@ -17,11 +18,13 @@ public class Node implements Comparable<Node> {
 		
 		finished = false;
 		degree = (long)Integer.MAX_VALUE * (long)Integer.MAX_VALUE;
+		real_degree = (long)Integer.MAX_VALUE * (long)Integer.MAX_VALUE;
 		from = null;
 	}
 	public void initialize() {
 		finished = false;
 		degree = (long)Integer.MAX_VALUE * (long)Integer.MAX_VALUE;
+		real_degree = (long)Integer.MAX_VALUE * (long)Integer.MAX_VALUE;
 		from = null;
 	}
 	
